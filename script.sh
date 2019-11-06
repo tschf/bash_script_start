@@ -2,6 +2,26 @@
 # Starting point script. Place all the logic you may need in order to get started
 # on a new bash script that received any arguments.
 
+# We may have other scripts in the same directory that we want to access as
+# a relative file path, so store the source dir.
+# Solution adapted from:
+# https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself
+SOURCE="${BASH_SOURCE[0]}"
+# -h test: file exists and is a symlink
+while [ -h "$SOURCE" ]
+do # resolve $SOURCE until the file is no longer a symlink
+    DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+
+    # If source was a relative symlink, resolve it relative to the path where
+    # the symlink file was located
+    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SOURCE_NAME=$(basename $SOURCE)
+SOURCE_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+unset DIR
+unset SOURCE
+
 # Load args
 # Solution as documented on this Stack Overflow Question:
 # https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
@@ -26,12 +46,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
-    --b1) # Bool var - not second arg to read
+    --b1) # Bool var - no second arg to read
     BOOL1=true
     shift # past argument
     ;;
     *)    # unknown option
-    echo $1
     POSITIONAL+=("$1")
     shift # past argument
     ;;
@@ -39,6 +58,8 @@ esac
 done
 set -- "${POSITIONAL[1]}" # restore positional parameters
 
+printf "SOURCE_NAME=$SOURCE_NAME\n"
+printf "SOURCE_DIR=$SOURCE_DIR\n"
 printf "ARG1=$ARG1\n"
 printf "ARG2=$ARG2\n"
 printf "BOOL1=$BOOL1\n"
