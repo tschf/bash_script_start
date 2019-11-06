@@ -7,6 +7,7 @@ Just grab it to your project and start hacking away:
 
 ```
 wget https://raw.githubusercontent.com/tschf/bash_script_start/master/script.sh
+chmod +x script.sh
 ```
 
 ## About
