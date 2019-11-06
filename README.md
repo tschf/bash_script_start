@@ -6,7 +6,7 @@ on a new bash script that received any arguments.
 Just grab it to your project and start hacking away:
 
 ```
-wget 
+wget https://raw.githubusercontent.com/tschf/bash_script_start/master/script.sh
 ```
 
 ## About
