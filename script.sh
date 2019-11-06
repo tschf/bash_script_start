@@ -56,7 +56,6 @@ case $key in
     ;;
 esac
 done
-set -- "${POSITIONAL[1]}" # restore positional parameters
 
 printf "SOURCE_NAME=$SOURCE_NAME\n"
 printf "SOURCE_DIR=$SOURCE_DIR\n"
