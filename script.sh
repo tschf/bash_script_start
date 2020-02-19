@@ -2,6 +2,18 @@
 # Starting point script. Place all the logic you may need in order to get started
 # on a new bash script that received any arguments.
 
+# Usually, we would just do `set -e` but for debugging where and error occurs
+# it can be useful to print some more details info.
+# This is a solution adapted from: https://unix.stackexchange.com/questions/462156/how-do-i-find-the-line-number-in-bash-when-an-error-occured
+set -eE -o functrace
+
+logError() {
+  local lineno=$1
+  local msg=$2
+  printf "Failed at $lineno: $msg\n"
+}
+trap 'logError ${LINENO} "$BASH_COMMAND"' ERR
+
 # We may have other scripts in the same directory that we want to access as
 # a relative file path, so store the source dir.
 # Solution adapted from:
